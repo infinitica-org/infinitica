@@ -359,8 +359,14 @@ void main(){
       c.rect = g;
     }
 
-    const l1 = $(".rh-l1"), l2 = $(".rh-l2"), cap = $(".rh-cap"), rule = $(".rh-rule"), outro = $(".rh-outro");
-    const intros = [".rh-hint", ".rh-cross", ".rh-glow"].map($);
+    const l1 = track.querySelector<HTMLElement>(".rh-l1");
+    const l2 = track.querySelector<HTMLElement>(".rh-l2");
+    const cap = track.querySelector<HTMLElement>(".rh-cap");
+    const rule = track.querySelector<HTMLElement>(".rh-rule");
+    const outro = track.querySelector<HTMLElement>(".rh-outro");
+    const intros = [".rh-hint", ".rh-cross", ".rh-glow"]
+      .map((s) => track.querySelector<HTMLElement>(s))
+      .filter((el): el is HTMLElement => el !== null);
     const RIB_A = 0.14, RIB_B = 0.63;
     let hovered: (typeof cards)[number] | null = null;
     const clock = new THREE.Clock();
@@ -369,16 +375,22 @@ void main(){
       const pp = p, time = clock.getElapsedTime();
       const rise = 1 - out(span(pp, 0, 0.12));
       const run = mix(-50, 76, span(pp, 0, 0.58));
-      l1.style.transform = `translate3d(${run}vw,${rise * 34}vh,0)`;
-      l2.style.transform = `translate3d(${-run}vw,${rise * 34}vh,0)`;
-      cap.style.opacity = String(1 - span(pp, 0.52, 0.57));
-      cap.style.transform = `translate(-50%,calc(-50% + ${rise * 34}vh))`;
+      if (l1) l1.style.transform = `translate3d(${run}vw,${rise * 34}vh,0)`;
+      if (l2) l2.style.transform = `translate3d(${-run}vw,${rise * 34}vh,0)`;
+      if (cap) {
+        cap.style.opacity = String(1 - span(pp, 0.52, 0.57));
+        cap.style.transform = `translate(-50%,calc(-50% + ${rise * 34}vh))`;
+      }
       const intro = 1 - span(pp, 0, 0.05);
-      intros.forEach((el) => (el.style.opacity = String(intro)));
-      rule.style.transform = `scaleX(${ease(span(pp, 0.72, 0.86))})`;
+      intros.forEach((el) => {
+        if (el) el.style.opacity = String(intro);
+      });
+      if (rule) rule.style.transform = `scaleX(${ease(span(pp, 0.72, 0.86))})`;
       const o = span(pp, 0.84, 0.94);
-      outro.style.opacity = String(o);
-      outro.style.transform = `translateY(${(1 - out(o)) * 30}px)`;
+      if (outro) {
+        outro.style.opacity = String(o);
+        outro.style.transform = `translateY(${(1 - out(o)) * 30}px)`;
+      }
 
       const pr = span(pp, RIB_A, RIB_B), head = mix(0, PATH_L + cards.length * STEP, pr);
       for (const c of cards) {
@@ -406,7 +418,7 @@ void main(){
     }
 
     /* hover */
-    const nameEl = $(".rh-name");
+    const nameEl = track.querySelector<HTMLElement>(".rh-name");
     const onMove = (e: PointerEvent) => {
       let hit: typeof hovered = null;
       if (p > 0.86) {
@@ -419,10 +431,12 @@ void main(){
         }
       }
       hovered = hit;
-      nameEl.style.opacity = hit ? "1" : "0";
-      if (hit) {
-        nameEl.textContent = `${hit.title} — ${PRODUCTS[hit.i][1]}  ↗`;
-        nameEl.style.transform = `translate(${e.clientX + 16}px,${e.clientY + 18}px)`;
+      if (nameEl) {
+        nameEl.style.opacity = hit ? "1" : "0";
+        if (hit) {
+          nameEl.textContent = `${hit.title} — ${PRODUCTS[hit.i][1]}  ↗`;
+          nameEl.style.transform = `translate(${e.clientX + 16}px,${e.clientY + 18}px)`;
+        }
       }
     };
     track.addEventListener("pointermove", onMove);
@@ -471,19 +485,13 @@ void main(){
         </div>
         <div className="rh-rule" />
         <canvas className="rh-gl" />
-        <div className="rh-hint rh-fade">SCROLL TO EXPLORE&nbsp; ↓</div>
         <div className="rh-outro">
           <span>( 06 products · live )</span>
           <a href="#products">See them all →</a>
         </div>
         <footer className="rh-bot rh-fade">
           <p>An independent product company. No client work — only software we own and keep improving.</p>
-          <div className="mid">
-            SAAS<s>/</s>AI<s>/</s>TOOLS<s>/</s>EXPERIMENTS
-          </div>
-          <button className="r" onClick={onSound} aria-pressed={soundOn} aria-label="Ambient sound">
-            SOUND {soundOn ? "ON" : "OFF"}
-          </button>
+        
         </footer>
         <div className="rh-name" />
       </section>
