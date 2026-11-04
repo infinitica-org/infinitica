@@ -26,7 +26,6 @@ interface OfficeLocation {
   badge: string;
   name: string;
   coordinates: string;
-  status: string;
   addressLines: string[];
   fullAddress: string;
   mapQuery: string;
@@ -42,7 +41,7 @@ const officeLocations: OfficeLocation[] = [
     badge: "Corporate Registered Office",
     name: "Infinitica Technology Solutions Private Limited",
     coordinates: "11.6643° N, 78.1460° E",
-    status: "Corporate Base",
+    
     addressLines: [
       "No. 3/55, Christ Home, Kattur",
       "Sarkar Kollapatti",
@@ -60,7 +59,6 @@ const officeLocations: OfficeLocation[] = [
     badge: "Operational Headquarters",
     name: "Infinitica Technology Solutions Private Limited",
     coordinates: "12.9897° N, 77.5873° E",
-    status: "Active Hub",
     addressLines: [
       "Sona Basecamp, Sona Towers",
       "Vasanth Nagar",
@@ -78,7 +76,6 @@ const officeLocations: OfficeLocation[] = [
     badge: "Campus Branch Office",
     name: "Infinitica Technology Solutions Private Limited",
     coordinates: "11.6784° N, 78.1396° E",
-    status: "Campus Lab",
     addressLines: [
       "Basement Floor, Sona College Campus",
       "Junction Main Road",
@@ -127,19 +124,7 @@ export default function ContactPage() {
           <span className="font-medium tracking-tight">Infinitica</span>
         </Link>
 
-        <nav className="flex items-center gap-6 sm:gap-10">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.16em] text-[var(--cream)] opacity-70 hover:opacity-100 hover:text-[var(--pink)] transition-all"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Return to</span> Studio
-          </Link>
-          <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full border border-[var(--line)] bg-white/[0.02] text-[11px] font-mono uppercase tracking-wider text-[#9ef0c0]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#9ef0c0] animate-pulse" />
-            <span>Hubs Active</span>
-          </div>
-        </nav>
+        
       </header>
 
       {/* ── Main Contact Stage ── */}
@@ -195,7 +180,7 @@ export default function ContactPage() {
                   </p>
                   <button
                     onClick={() => setIsSubmitted(false)}
-                    className="pill magnetic px-8 py-3 text-xs uppercase tracking-wider font-semibold"
+                    className="pill magnetic text-[#07060b] px-8 py-3 text-xs uppercase tracking-wider font-semibold"
                   >
                     Send Another Transmission
                   </button>
@@ -262,9 +247,9 @@ export default function ContactPage() {
 
                   <button
                     type="submit"
-                    className="pill big magnetic w-full sm:w-auto inline-flex items-center justify-center gap-3"
+                    className="pill big magnetic text-[#07060b] font-semibold w-full sm:w-auto inline-flex items-center justify-center gap-3"
                   >
-                    <span>Transmit Brief</span>
+                    <span>Submit</span>
                     <Send className="w-4 h-4" />
                   </button>
                 </form>
@@ -276,13 +261,9 @@ export default function ContactPage() {
               
               {/* Card 1: Direct Channels */}
               <div className="rounded-[26px] border border-[var(--line)] bg-gradient-to-br from-white/[0.05] via-white/[0.02] to-transparent backdrop-blur-xl p-8 relative overflow-hidden group hover:border-[var(--pink)] transition-all duration-300">
-                <div className="flex items-center justify-between mb-6">
+                <div className="mb-6">
                   <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-[var(--pink)]">
                     ( 02 · Channels )
-                  </span>
-                  <span className="text-xs font-mono text-[#9ef0c0] flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#9ef0c0] animate-pulse" />
-                    Online
                   </span>
                 </div>
 
@@ -299,10 +280,10 @@ export default function ContactPage() {
                       Email Communication
                     </span>
                     <a
-                      href="mailto:contact@infinitica.com"
+                      href="mailto:josh@infinitica"
                       className="text-base sm:text-lg text-[var(--cream)] hover:text-[var(--pink)] transition-colors font-medium block"
                     >
-                      contact@infinitica.com
+                      josh@infinitica
                     </a>
                   </div>
 
@@ -334,10 +315,7 @@ export default function ContactPage() {
                   An independent product engineering enterprise incorporated in Tamil Nadu, India.
                 </p>
 
-                <div className="pt-4 border-t border-[var(--line)] flex items-center justify-between text-xs font-mono text-[var(--cream)] opacity-70">
-                  <span>CIN Registered</span>
-                  <span>Tamil Nadu & Karnataka</span>
-                </div>
+                
               </div>
             </div>
           </div>
@@ -370,10 +348,6 @@ export default function ContactPage() {
                     <div className="flex items-center justify-between gap-2 mb-5">
                       <span className="px-2.5 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider bg-[var(--violet)]/20 border border-[var(--pink)]/30 text-[var(--pink)]">
                         {office.type}
-                      </span>
-                      <span className="text-xs font-mono text-[#9ef0c0] flex items-center gap-1.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#9ef0c0] animate-pulse" />
-                        {office.status}
                       </span>
                     </div>
 
@@ -432,8 +406,8 @@ export default function ContactPage() {
           <span>&copy; {new Date().getFullYear()} Infinitica Technology Solutions Private Limited.</span>
           <div className="flex items-center gap-6">
             <Link href="/" className="hover:text-[var(--pink)] transition-colors">Studio</Link>
-            <Link href="/#products" className="hover:text-[var(--pink)] transition-colors">Products</Link>
-            <Link href="/#process" className="hover:text-[var(--pink)] transition-colors">Process</Link>
+            <Link href="/#process" className="hover:text-[var(--pink)] transition-colors">How We Build</Link>
+            <Link href="/#numbers" className="hover:text-[var(--pink)] transition-colors">Numbers</Link>
           </div>
         </div>
         <div className="wordmark" aria-label="Infinitica">

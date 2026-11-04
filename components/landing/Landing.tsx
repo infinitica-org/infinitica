@@ -35,13 +35,6 @@ function Split({ text, cls = "" }: { text: string; cls?: string }) {
   );
 }
 
-const products = [
-  { no: "01", name: "Orbit", kind: "Team workspace", line: "Docs, tasks and chat that orbit one source of truth.", status: "Live", art: "orbit" },
-  { no: "02", name: "Pulse", kind: "Product analytics", line: "Know what users love before they tell you.", status: "Live", art: "pulse" },
-  { no: "03", name: "Ledger", kind: "Finance autopilot", line: "Books that close themselves at the end of every month.", status: "Beta", art: "ledger" },
-  { no: "04", name: "Nova", kind: "AI companion", line: "A writing partner that learns your voice, not the internet's.", status: "In the lab", art: "nova" },
-];
-
 const steps = [
   { no: "01", title: "Spark", text: "Every product starts as a problem we live with ourselves. If we wouldn't use it daily, we don't build it." },
   { no: "02", title: "Prototype", text: "Working software in days, not decks in weeks. Real people touch it before we fall in love with it." },
@@ -68,7 +61,7 @@ export default function Landing() {
 
       // smooth scroll driving ScrollTrigger
       const lenis = new Lenis({ duration: 1.15, smoothWheel: true, touchMultiplier: 1.4 });
-      lenis.stop();
+
       lenis.on("scroll", ScrollTrigger.update);
       const tick = (t: number) => lenis.raf(t * 1000);
       gsap.ticker.add(tick);
@@ -94,28 +87,10 @@ export default function Landing() {
         else header.classList.remove("hide");
       });
 
-      // ── loader → intro
-      const count = { v: 0 };
-      const intro = gsap.timeline({ defaults: { ease: "expo.out" } });
-      intro
-        .to(count, {
-          v: 100,
-          duration: reduce ? 0.3 : 1.8,
-          ease: "power2.inOut",
-          onUpdate: () => (q(".ld-num")[0].textContent = String(Math.round(count.v)).padStart(3, "0")),
-        })
-        .to(q(".ld-bar i"), { scaleX: 1, duration: 1.8, ease: "power2.inOut" }, 0)
-        .to(q(".ld-inner"), { yPercent: -30, opacity: 0, duration: 0.6, ease: "power3.in" })
-        .to(q(".loader"), { clipPath: "inset(0 0 100% 0)", duration: 1.1, ease: "expo.inOut" }, "-=.15")
-        .to(fieldIntro, { y: 2.4, pitch: -0.07, duration: 3.4, ease: "power3.out" }, "<")
-        .to(fieldIntro, { size: 1, duration: 2.4, ease: "power2.out" }, "<")
-        .from(q(".rh-in"), { yPercent: 120, opacity: 0, duration: 1.6, stagger: 0.12 }, "<.45")
-        .from(q(".rh-cross"), { scaleX: 0, duration: 1.6, ease: "expo.inOut" }, "<")
-        .from(q(".rh-cross i"), { scale: 0, rotate: -180, duration: 1.4, ease: "back.out(1.6)" }, "<.4")
-        .from(q(".rh-glow"), { opacity: 0, duration: 1.6 }, "<")
-        .from(q(".rh-fade"), { y: 24, opacity: 0, duration: 1.1, stagger: 0.08 }, "<.2")
-        .from(q(".hdr > *"), { y: -30, opacity: 0, duration: 1, stagger: 0.08 }, "<")
-        .add(() => lenis.start());
+      if (field) {
+        gsap.to(fieldIntro, { y: 2.4, pitch: -0.07, duration: 2, ease: "power3.out" });
+        gsap.to(fieldIntro, { size: 1, duration: 1.5, ease: "power2.out" });
+      }
 
       // field dims as content takes over
       gsap.to(q(".field"), {
@@ -143,44 +118,6 @@ export default function Landing() {
         opacity: 0,
         x: -30,
         scrollTrigger: { trigger: ".manifesto", start: "top 80%" },
-      });
-
-      // ── products: pinned horizontal rail
-      const track = q(".rail")[0] as HTMLElement;
-      const dist = () => track.scrollWidth - window.innerWidth;
-      const rail = gsap.to(track, {
-        x: () => -dist(),
-        ease: "none",
-        scrollTrigger: {
-          trigger: ".products",
-          start: "top top",
-          end: () => "+=" + dist(),
-          pin: true,
-          scrub: 1,
-          invalidateOnRefresh: true,
-          onUpdate: (s) => gsap.set(q(".rail-progress i"), { scaleX: s.progress }),
-        },
-      });
-      q(".card").forEach((card) => {
-        gsap.from(card.querySelector(".art"), {
-          scale: 1.25,
-          rotate: -6,
-          ease: "none",
-          scrollTrigger: { trigger: card, containerAnimation: rail, start: "left right", end: "center center", scrub: true },
-        });
-        gsap.from(card.querySelectorAll(".card-meta > *"), {
-          y: 40,
-          opacity: 0,
-          stagger: 0.08,
-          scrollTrigger: { trigger: card, containerAnimation: rail, start: "left 75%" },
-        });
-      });
-      gsap.from(q(".products-head .c"), {
-        yPercent: 110,
-        stagger: 0.02,
-        duration: 1,
-        ease: "expo.out",
-        scrollTrigger: { trigger: ".products", start: "top 75%" },
       });
 
       // ── process: stacked cards that recede as the next one arrives
@@ -326,15 +263,7 @@ export default function Landing() {
 
   return (
     <div className="inf" ref={root}>
-      <div className="loader" aria-hidden="true">
-        <div className="ld-inner">
-          <LogoMark className="ld-mark" />
-          <span className="ld-num">000</span>
-          <span className="ld-bar">
-            <i />
-          </span>
-        </div>
-      </div>
+      
       <div className="cursor" aria-hidden="true" />
 
       <div className="field" aria-hidden="true">
@@ -350,10 +279,8 @@ export default function Landing() {
           Infinitica
         </Link>
         <nav aria-label="Main">
-          <a href="#products">Products</a>
-          <a href="#process">How we build</a>
-          <a href="#numbers">Studio</a>
-          <Link className="pill magnetic" href="/contact">
+       
+          <Link className="pill magnetic text-[#07060b] font-semibold" href="/contact">
             Let&rsquo;s talk
           </Link>
           <button className={`burger ${menu ? "x" : ""}`} onClick={toggleMenu} aria-label="Menu" aria-expanded={menu}>
@@ -364,9 +291,7 @@ export default function Landing() {
       </header>
 
       <div className="menu" aria-hidden={!menu}>
-        <a href="#products">Products</a>
-        <a href="#process">How we build</a>
-        <a href="#numbers">Studio</a>
+     
         <Link href="/contact">Contact</Link>
       </div>
 
@@ -382,44 +307,6 @@ export default function Landing() {
               </span>
             ))}
           </p>
-        </section>
-
-        <section className="products" id="products">
-          <div className="products-head">
-            <p className="eyebrow">( Our products )</p>
-            <h2>
-              <Split text="Made here. Owned here." />
-            </h2>
-          </div>
-          <div className="rail">
-            {products.map((p) => (
-              <article className="card" key={p.no}>
-                <div className={`art art-${p.art}`}>
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                </div>
-                <div className="card-meta">
-                  <div className="card-top">
-                    <span>{p.no}</span>
-                    <span className={`status s-${p.status === "Live" ? "live" : "soon"}`}>{p.status}</span>
-                  </div>
-                  <h3>{p.name}</h3>
-                  <p className="kind">{p.kind}</p>
-                  <p className="line">{p.line}</p>
-                </div>
-              </article>
-            ))}
-            <article className="card card-next">
-              <p>Next one is already brewing.</p>
-              <span className="inf-sym big">∞</span>
-            </article>
-          </div>
-          <div className="rail-progress">
-            <i />
-          </div>
         </section>
 
         <section className="process" id="process">
@@ -486,14 +373,14 @@ export default function Landing() {
             <Split text="that never ends." cls="grad" />
           </h2>
           <div className="cta-row reveal">
-            <Link href="/contact" className="pill big magnetic">
+            <Link href="/contact" className="pill big magnetic text-[#07060b] font-semibold">
               Start a conversation
               <svg viewBox="0 0 24 24">
                 <path d="M4 12h16M14 6l6 6-6 6" />
               </svg>
             </Link>
-            <a href="mailto:hello@infinitica.com" className="mail">
-              hello@infinitica.com
+            <a href="mailto:josh@infinitica" className="mail">
+              josh@infinitica.com
             </a>
           </div>
         </section>
@@ -502,8 +389,7 @@ export default function Landing() {
       <footer className="foot">
         <div className="foot-links">
           <span>© {new Date().getFullYear()} Infinitica</span>
-          <a href="#products">Products</a>
-          <a href="#process">Process</a>
+        
           <Link href="/contact">Contact</Link>
         </div>
         <div className="wordmark" aria-label="Infinitica">
