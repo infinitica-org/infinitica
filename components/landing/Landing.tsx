@@ -10,7 +10,6 @@ import { FieldScene } from "./FieldScene";
 import { Ambient } from "./ambient";
 import RibbonHero from "./RibbonHero";
 import LogoMark from "./LogoMark";
-import "./landing.css";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 // stop mobile URL-bar show/hide from re-measuring every pinned section
