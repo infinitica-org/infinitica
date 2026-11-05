@@ -283,7 +283,7 @@ export default function ContactPage() {
                       href="mailto:josh@infinitica"
                       className="text-base sm:text-lg text-[var(--cream)] hover:text-[var(--pink)] transition-colors font-medium block"
                     >
-                      josh@infinitica
+                      josh@infinitica.com
                     </a>
                   </div>
 
