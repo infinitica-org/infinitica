@@ -228,13 +228,30 @@ button.pill {
 .marquee em { font-style: normal; color: var(--violet); font-size: 0.5em; vertical-align: middle; }
 
 /* cta */
-.cta { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 16vh 20px; }
-.cta h2 { font-size: clamp(54px, calc(150 * var(--u)), 200px); margin-top: 20px; }
+.cta { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 16vh 24px; }
+.cta h2 {
+  font-size: clamp(48px, min(10.5vw, calc(140 * var(--u))), 155px);
+  margin-top: 24px;
+  margin-bottom: 0;
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+  text-align: center;
+  max-width: 100%;
+}
 .cta .grad .c { color: var(--pink); text-shadow: 0 0 50px rgba(172, 88, 233, 0.6); }
-.cta-row { display: flex; align-items: center; gap: 32px; margin-top: 7vh; flex-wrap: wrap; justify-content: center; }
-.pill.big { height: 64px; padding: 0 34px; font-size: 15px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #07060b !important; }
+.cta-desc {
+  margin: clamp(36px, 5vh, 64px) auto 0 !important;
+  padding: 0 16px;
+  max-width: 56ch;
+  font-size: clamp(15px, 1.3vw, 21px);
+  line-height: 1.6;
+  opacity: 0.8;
+  text-align: center;
+}
+.cta-row { display: flex; align-items: center; gap: 32px; margin-top: clamp(36px, 6vh, 56px); flex-wrap: wrap; justify-content: center; }
+.pill.big { height: 60px; padding: 0 32px; font-size: 14.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #07060b !important; }
 .pill.big svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.mail { font-size: 15px; border-bottom: 1px solid var(--line); padding-bottom: 4px; transition: border-color 0.3s; }
+.mail { font-size: 15px; border-bottom: 1px solid var(--line); padding: 8px 4px; display: inline-flex; align-items: center; transition: border-color 0.3s; }
 .mail:hover { border-color: var(--cream); }
 
 /* footer */
@@ -361,7 +378,9 @@ button.pill {
   .num p { font-size: 13px; }
   .step-no { font-size: clamp(90px, 30vw, 160px); }
   .marquee { padding: 8vh 0; }
-  .cta { min-height: 80vh; }
+  .cta { min-height: 80vh; padding: 12vh 16px; }
+  .cta h2 { font-size: clamp(40px, 11vw, 76px); }
+  .cta-desc { font-size: 14.5px; margin-top: 24px !important; }
   .card h3 { font-size: 40px; }
   .card-meta { padding: 18px 20px 22px; }
   .line { font-size: 14px; }
