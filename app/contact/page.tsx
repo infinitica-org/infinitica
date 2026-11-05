@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import emailjs from "@emailjs/browser";
 import LogoMark from "@/components/landing/LogoMark";
 import {
   MapPin,
@@ -13,7 +14,9 @@ import {
   ArrowLeft,
   Clock,
   Globe,
-  Sparkles
+  Sparkles,
+  Loader2,
+  AlertCircle
 } from "lucide-react";
 import "@/components/landing/landing.css";
 
@@ -95,6 +98,8 @@ const topics = [
 
 export default function ContactPage() {
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -103,9 +108,53 @@ export default function ContactPage() {
     message: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
+    setErrorMessage(null);
+
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+    if (!serviceId || !templateId || !publicKey) {
+      setErrorMessage(
+        "EmailJS is not yet configured. Please add NEXT_PUBLIC_EMAILJS_SERVICE_ID, NEXT_PUBLIC_EMAILJS_TEMPLATE_ID, and NEXT_PUBLIC_EMAILJS_PUBLIC_KEY to your .env.local file."
+      );
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        company: formData.company || "Not provided",
+        topic: formData.topic,
+        message: formData.message,
+        reply_to: formData.email,
+      };
+
+      await emailjs.send(serviceId, templateId, templateParams, publicKey);
+
+      setIsSubmitted(true);
+      setFormData({
+        name: "",
+        email: "",
+        company: "",
+        topic: "Enterprise Solutions",
+        message: ""
+      });
+    } catch (err: unknown) {
+      const errObj = err as { text?: string; message?: string };
+      const message =
+        errObj?.text ||
+        errObj?.message ||
+        "Failed to transmit message. Please try again or reach out directly to josh@infinitica.com.";
+      setErrorMessage(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -179,7 +228,10 @@ export default function ContactPage() {
                     Thank you, <span className="text-white font-medium">{formData.name || "friend"}</span>. An assigned specialist will reach out to <span className="text-[var(--pink)] font-mono">{formData.email}</span> shortly.
                   </p>
                   <button
-                    onClick={() => setIsSubmitted(false)}
+                    onClick={() => {
+                      setIsSubmitted(false);
+                      setErrorMessage(null);
+                    }}
                     className="pill magnetic text-[#07060b] px-8 py-3 text-xs uppercase tracking-wider font-semibold"
                   >
                     Send Another Transmission
@@ -187,7 +239,16 @@ export default function ContactPage() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
-                
+                  {errorMessage && (
+                    <div className="p-4 rounded-xl border border-red-500/40 bg-red-950/30 text-red-200 text-xs sm:text-sm flex items-start gap-3 backdrop-blur-md">
+                      <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+                      <div className="flex-1">
+                        <p className="font-medium text-red-200">Transmission Alert</p>
+                        <p className="opacity-80 mt-1 leading-relaxed">{errorMessage}</p>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Dual Input Grid */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
@@ -197,10 +258,11 @@ export default function ContactPage() {
                       <input
                         type="text"
                         required
+                        disabled={isSubmitting}
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="Alex Morgan"
-                        className="w-full bg-black/40 border border-[var(--line)] px-4 py-3 text-sm text-[var(--cream)] placeholder:text-zinc-600 rounded-xl focus:outline-none focus:border-[var(--pink)] focus:ring-1 focus:ring-[var(--violet)] transition-all font-light"
+                        className="w-full bg-black/40 border border-[var(--line)] px-4 py-3 text-sm text-[var(--cream)] placeholder:text-zinc-600 rounded-xl focus:outline-none focus:border-[var(--pink)] focus:ring-1 focus:ring-[var(--violet)] transition-all font-light disabled:opacity-50 disabled:cursor-not-allowed"
                       />
                     </div>
                     <div>
@@ -210,10 +272,11 @@ export default function ContactPage() {
                       <input
                         type="email"
                         required
+                        disabled={isSubmitting}
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="alex@enterprise.com"
-                        className="w-full bg-black/40 border border-[var(--line)] px-4 py-3 text-sm text-[var(--cream)] placeholder:text-zinc-600 rounded-xl focus:outline-none focus:border-[var(--pink)] focus:ring-1 focus:ring-[var(--violet)] transition-all font-light"
+                        className="w-full bg-black/40 border border-[var(--line)] px-4 py-3 text-sm text-[var(--cream)] placeholder:text-zinc-600 rounded-xl focus:outline-none focus:border-[var(--pink)] focus:ring-1 focus:ring-[var(--violet)] transition-all font-light disabled:opacity-50 disabled:cursor-not-allowed"
                       />
                     </div>
                   </div>
@@ -224,10 +287,11 @@ export default function ContactPage() {
                     </label>
                     <input
                       type="text"
+                      disabled={isSubmitting}
                       value={formData.company}
                       onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                       placeholder="Acme Global Inc."
-                      className="w-full bg-black/40 border border-[var(--line)] px-4 py-3 text-sm text-[var(--cream)] placeholder:text-zinc-600 rounded-xl focus:outline-none focus:border-[var(--pink)] focus:ring-1 focus:ring-[var(--violet)] transition-all font-light"
+                      className="w-full bg-black/40 border border-[var(--line)] px-4 py-3 text-sm text-[var(--cream)] placeholder:text-zinc-600 rounded-xl focus:outline-none focus:border-[var(--pink)] focus:ring-1 focus:ring-[var(--violet)] transition-all font-light disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
 
@@ -238,19 +302,30 @@ export default function ContactPage() {
                     <textarea
                       required
                       rows={5}
+                      disabled={isSubmitting}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder="Tell us about your system architecture, timelines, or partnership goals..."
-                      className="w-full bg-black/40 border border-[var(--line)] p-4 text-sm text-[var(--cream)] placeholder:text-zinc-600 rounded-xl focus:outline-none focus:border-[var(--pink)] focus:ring-1 focus:ring-[var(--violet)] transition-all font-light resize-none"
+                      className="w-full bg-black/40 border border-[var(--line)] p-4 text-sm text-[var(--cream)] placeholder:text-zinc-600 rounded-xl focus:outline-none focus:border-[var(--pink)] focus:ring-1 focus:ring-[var(--violet)] transition-all font-light resize-none disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="pill big magnetic text-[#07060b] font-semibold w-full sm:w-auto inline-flex items-center justify-center gap-3"
+                    disabled={isSubmitting}
+                    className="pill big magnetic text-[#07060b] font-semibold w-full sm:w-auto inline-flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    <span>Submit</span>
-                    <Send className="w-4 h-4" />
+                    {isSubmitting ? (
+                      <>
+                        <span>Transmitting...</span>
+                        <Loader2 className="w-4 h-4 animate-spin text-[#07060b]" />
+                      </>
+                    ) : (
+                      <>
+                        <span>Submit</span>
+                        <Send className="w-4 h-4" />
+                      </>
+                    )}
                   </button>
                 </form>
               )}
