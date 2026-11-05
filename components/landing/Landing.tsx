@@ -36,14 +36,31 @@ function Split({ text, cls = "" }: { text: string; cls?: string }) {
 }
 
 const steps = [
-  { no: "01", title: "Spark", text: "Every product starts as a problem we live with ourselves. If we wouldn't use it daily, we don't build it." },
-  { no: "02", title: "Prototype", text: "Working software in days, not decks in weeks. Real people touch it before we fall in love with it." },
-  { no: "03", title: "Ship", text: "Small team, sharp scope, launch day. Then we listen harder than we talk." },
-  { no: "04", title: "Compound", text: "We never hand it over. Products get better every week, for as long as people need them." },
+  {
+    no: "01",
+    title: "Identify the consequential.",
+    text: "We investigate complex problems, challenge established assumptions and identify opportunities where new technological approaches can create meaningful advantage.",
+  },
+  {
+    no: "02",
+    title: "Establish the foundation.",
+    text: "We examine underlying principles, formulate hypotheses and validate technical feasibility. Evidence, not assumption, determines the direction of development.",
+  },
+  {
+    no: "03",
+    title: "Build with intent.",
+    text: "We translate validated concepts into functional systems. Architecture, precision and rigorous testing govern how technologies are designed, developed and deployed.",
+  },
+  {
+    no: "04",
+    title: "Advance continuously.",
+    text: "Deployment establishes the conditions for further progress. We evaluate operational performance, incorporate new intelligence and continuously strengthen the systems we build.",
+  },
 ];
 
 const manifesto =
-  "We don't take client briefs. We don't bill hours. We build our own products — obsess over them, ship them, and keep making them better. Forever.";
+   
+"We are not here to follow the trajectory of technology. We are here to shape it. Through rigorous research, unconventional thinking, and uncompromising engineering, we build intelligent systems for a world that demands more.";
 
 export default function Landing() {
   const root = useRef<HTMLDivElement>(null);
@@ -311,8 +328,8 @@ export default function Landing() {
 
         <section className="process" id="process">
           <div className="process-head">
-            <p className="eyebrow">( How a product is born )</p>
-            <h2>From itch to institution.</h2>
+            <p className="eyebrow">( Our Operating Philosophy )</p>
+            <h2>From first principles to consequential technology.</h2>
           </div>
           {steps.map((s, i) => (
             <div className="step" key={s.no} style={{ top: `calc(12vh + ${i * 22}px)` }}>
@@ -366,20 +383,22 @@ export default function Landing() {
         </section>
 
         <section className="cta">
-          <p className="eyebrow reveal">( Join the build )</p>
+          <p className="eyebrow reveal">( BE PART OF WHAT&apos;S NEXT )</p>
           <h2>
-            <Split text="Let's make something" />
-            <br />
-            <Split text="that never ends." cls="grad" />
+           
+            <Split text="Build what comesnext." cls="grad" />
           </h2>
+          <p className="cta-desc reveal">
+            We are advancing the frontiers of intelligence through research, engineering and ambitious technological work.
+          </p>
           <div className="cta-row reveal">
             <Link href="/contact" className="pill big magnetic text-[#07060b] font-semibold">
-              Start a conversation
+              Explore with us
               <svg viewBox="0 0 24 24">
                 <path d="M4 12h16M14 6l6 6-6 6" />
               </svg>
             </Link>
-            <a href="mailto:josh@infinitica" className="mail">
+            <a href="mailto:josh@infinitica.com" className="mail">
               josh@infinitica.com
             </a>
           </div>
@@ -389,7 +408,6 @@ export default function Landing() {
       <footer className="foot">
         <div className="foot-links">
           <span>© {new Date().getFullYear()} Infinitica</span>
-        
           <Link href="/contact">Contact</Link>
         </div>
         <div className="wordmark" aria-label="Infinitica">

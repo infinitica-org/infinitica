@@ -133,7 +133,7 @@ export default function ContactPage() {
         <section className="w-full pt-16 sm:pt-24 pb-12 sm:pb-16 px-6 sm:px-12 max-w-[1400px] mx-auto">
           <div className="max-w-4xl">
             <p className="eyebrow text-[var(--pink)] mb-5 tracking-[0.24em]">
-              ( Transmit Direct Brief )
+              ( Explore with us )
             </p>
             <h1 className="font-[family-name:var(--display)] text-5xl sm:text-7xl lg:text-[92px] uppercase tracking-[-0.015em] leading-[0.92] mb-6 text-[var(--cream)]">
               Let&apos;s Build <br />
@@ -404,11 +404,7 @@ export default function ContactPage() {
       <footer className="relative z-10 w-full border-t border-[var(--line)] bg-[var(--ink)] overflow-hidden">
         <div className="max-w-[1400px] mx-auto px-6 sm:px-12 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono uppercase tracking-wider text-[var(--cream)] opacity-60">
           <span>&copy; {new Date().getFullYear()} Infinitica Technology Solutions Private Limited.</span>
-          <div className="flex items-center gap-6">
-            <Link href="/" className="hover:text-[var(--pink)] transition-colors">Studio</Link>
-            <Link href="/#process" className="hover:text-[var(--pink)] transition-colors">How We Build</Link>
-            <Link href="/#numbers" className="hover:text-[var(--pink)] transition-colors">Numbers</Link>
-          </div>
+         
         </div>
         <div className="wordmark" aria-label="Infinitica">
           <span className="wi">
