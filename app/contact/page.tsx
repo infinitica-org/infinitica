@@ -479,7 +479,11 @@ export default function ContactPage() {
       <footer className="relative z-10 w-full border-t border-[var(--line)] bg-[var(--ink)] overflow-hidden">
         <div className="max-w-[1400px] mx-auto px-6 sm:px-12 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono uppercase tracking-wider text-[var(--cream)] opacity-60">
           <span>&copy; {new Date().getFullYear()} Infinitica Technology Solutions Private Limited.</span>
-         
+          <div className="flex items-center gap-6">
+            <Link href="/products" className="hover:text-[var(--pink)] transition-colors">Products</Link>
+            <Link href="/privacy" className="hover:text-[var(--pink)] transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-[var(--pink)] transition-colors">Terms &amp; Conditions</Link>
+          </div>
         </div>
         <div className="wordmark" aria-label="Infinitica">
           <span className="wi">

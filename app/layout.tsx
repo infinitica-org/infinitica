@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title: { default: SITE.title, template: "%s — Infinitica" },
   description: SITE.description,
   applicationName: SITE.name,
-  keywords: ["Infinitica", "product company", "SaaS", "software products", "AI products", "product studio"],
+  keywords: ["Infinitica", "technology solutions", "research", "engineering", "AI products"],
   alternates: { canonical: "/" },
   openGraph: { type: "website", url: "/", siteName: SITE.name, title: SITE.title, description: SITE.description, locale: "en_US" },
   twitter: { card: "summary_large_image", title: SITE.title, description: SITE.description },

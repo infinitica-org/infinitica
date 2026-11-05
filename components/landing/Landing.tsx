@@ -20,7 +20,11 @@ function Split({ text, cls = "" }: { text: string; cls?: string }) {
   return (
     <>
       {text.split(" ").map((word, i, arr) => (
-        <span className={`w ${cls}`} key={i}>
+        <span
+          className={`w ${cls}`}
+          key={i}
+          style={{ marginRight: i < arr.length - 1 ? "0.28em" : 0 }}
+        >
           <span className="wi">
             {[...word].map((c, j) => (
               <span className="c" key={j}>
@@ -28,7 +32,6 @@ function Split({ text, cls = "" }: { text: string; cls?: string }) {
               </span>
             ))}
           </span>
-          {i < arr.length - 1 ? " " : ""}
         </span>
       ))}
     </>
@@ -296,7 +299,9 @@ export default function Landing() {
           Infinitica
         </Link>
         <nav aria-label="Main">
-       
+          <Link href="/products" className="text-xs font-mono uppercase tracking-[0.18em] opacity-80 hover:opacity-100 hover:text-[var(--pink)] transition-all">
+            Products
+          </Link>
           <Link className="pill magnetic text-[#07060b] font-semibold" href="/contact">
             Let&rsquo;s talk
           </Link>
@@ -308,7 +313,7 @@ export default function Landing() {
       </header>
 
       <div className="menu" aria-hidden={!menu}>
-     
+        <Link href="/products">Products</Link>
         <Link href="/contact">Contact</Link>
       </div>
 
@@ -324,6 +329,39 @@ export default function Landing() {
               </span>
             ))}
           </p>
+        </section>
+
+        {/* ── Products Showcase ── */}
+        <section className="px-6 sm:px-12 py-20 sm:py-28 max-w-[1200px] mx-auto w-full relative z-10" id="products">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 border-b border-[var(--line)] pb-8">
+            <div>
+              <p className="eyebrow text-[var(--pink)] mb-3">( Product )</p>
+              <h2 className="font-[family-name:var(--display)] text-5xl sm:text-7xl uppercase tracking-tight text-[var(--cream)]">
+                Our Products
+              </h2>
+            </div>
+          </div>
+
+          <Link
+            href="/products"
+            className="group block p-8 sm:p-14 rounded-3xl border border-[var(--line)] bg-gradient-to-br from-[#1a1128] via-[#0f0a18] to-[#07060b] hover:border-[var(--pink)] transition-all duration-300 relative overflow-hidden"
+          >
+            <div className="flex items-center justify-between mb-8">
+              <span className="text-xs font-mono uppercase tracking-[0.2em] text-[var(--pink)]">
+                Product
+              </span>
+              <span className="text-xs font-mono uppercase tracking-[0.2em] text-[var(--cream)] opacity-60 group-hover:opacity-100 group-hover:text-[var(--pink)] transition-all">
+                View Product →
+              </span>
+            </div>
+
+            <h3 className="font-[family-name:var(--display)] text-5xl sm:text-7xl lg:text-8xl uppercase tracking-wide text-[var(--cream)] mb-5 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-[var(--cream)] group-hover:to-[var(--pink)] transition-all">
+              HelloSmart.ai
+            </h3>
+            <p className="text-lg sm:text-2xl text-[var(--cream)] opacity-85 max-w-2xl font-light leading-relaxed">
+              The AI-native hiring platform. AI agents run your recruitment end to end.
+            </p>
+          </Link>
         </section>
 
         <section className="process" id="process">
@@ -385,7 +423,7 @@ export default function Landing() {
         <section className="cta">
           <p className="eyebrow reveal">( BE PART OF WHAT&apos;S NEXT )</p>
           <h2>
-           
+          
             <Split text="Build what comes next." cls="grad" />
           </h2>
           <p className="cta-desc reveal">
@@ -408,6 +446,9 @@ export default function Landing() {
       <footer className="foot">
         <div className="foot-links">
           <span>© {new Date().getFullYear()} Infinitica</span>
+          <Link href="/products">Products</Link>
+          <Link href="/privacy">Privacy Policy</Link>
+          <Link href="/terms">Terms &amp; Conditions</Link>
           <Link href="/contact">Contact</Link>
         </div>
         <div className="wordmark" aria-label="Infinitica">

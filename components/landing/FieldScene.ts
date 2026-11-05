@@ -116,11 +116,11 @@ void main(){
 `;
 
 export class FieldScene {
-  private renderer: THREE.WebGLRenderer;
+  private renderer?: THREE.WebGLRenderer;
   private scene = new THREE.Scene();
-  private camera: THREE.PerspectiveCamera;
-  private uniforms: Record<string, THREE.IUniform>;
-  private dustUniforms: Record<string, THREE.IUniform>;
+  private camera!: THREE.PerspectiveCamera;
+  private uniforms: Record<string, THREE.IUniform> = {};
+  private dustUniforms: Record<string, THREE.IUniform> = {};
   private raf = 0;
   private clock = new THREE.Clock();
   private mouse = new THREE.Vector2(0, 0);
@@ -133,17 +133,53 @@ export class FieldScene {
   private hoverTarget = 0;
   private visible = true;
   private container: HTMLElement;
-  private observer: IntersectionObserver;
+  private observer?: IntersectionObserver;
+  disabled = false;
   intro = { y: 16, pitch: -0.9, size: 0 };
   dive = 0;
 
   constructor(container: HTMLElement) {
     this.container = container;
     const mobile = window.innerWidth < 820;
-    this.renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, powerPreference: "high-performance" });
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, mobile ? 1.5 : 1.75));
-    this.renderer.setClearColor(0x000000, 0);
-    container.appendChild(this.renderer.domElement);
+
+    // Check if WebGL context can actually be created
+    try {
+      const testCanvas = document.createElement("canvas");
+      const gl = testCanvas.getContext("webgl2") || testCanvas.getContext("webgl") || testCanvas.getContext("experimental-webgl");
+      if (!gl) {
+        this.disabled = true;
+        return;
+      }
+    } catch {
+      this.disabled = true;
+      return;
+    }
+
+    try {
+      this.renderer = new THREE.WebGLRenderer({
+        antialias: false,
+        alpha: true,
+        powerPreference: "high-performance",
+        failIfMajorPerformanceCaveat: false,
+      });
+      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, mobile ? 1.5 : 1.75));
+      this.renderer.setClearColor(0x000000, 0);
+      container.appendChild(this.renderer.domElement);
+
+      // Handle WebGL context loss gracefully so browser never blocks the page
+      this.renderer.domElement.addEventListener(
+        "webglcontextlost",
+        (event) => {
+          event.preventDefault();
+          this.visible = false;
+          if (this.raf) cancelAnimationFrame(this.raf);
+        },
+        false
+      );
+    } catch {
+      this.disabled = true;
+      return;
+    }
 
     this.camera = new THREE.PerspectiveCamera(mobile ? 72 : 58, 1, 0.1, 200);
 
@@ -223,6 +259,7 @@ export class FieldScene {
   }
 
   private resize = () => {
+    if (this.disabled || !this.renderer) return;
     const w = this.container.clientWidth || window.innerWidth;
     const h = this.container.clientHeight || window.innerHeight;
     this.renderer.setSize(w, h, false);
@@ -239,13 +276,16 @@ export class FieldScene {
 
   /** scroll velocity in px/frame from the smooth scroller */
   setVelocity(v: number) {
+    if (this.disabled) return;
     this.boost = Math.min(Math.abs(v) * 0.9, 40);
   }
   setHover(on: boolean) {
+    if (this.disabled) return;
     this.hoverTarget = on ? 1 : 0;
   }
 
   private loop = () => {
+    if (this.disabled || !this.renderer) return;
     this.raf = requestAnimationFrame(this.loop);
     const dt = Math.min(this.clock.getDelta(), 0.05);
     if (!this.visible) return;
@@ -275,13 +315,19 @@ export class FieldScene {
   };
 
   dispose() {
-    cancelAnimationFrame(this.raf);
+    if (this.raf) cancelAnimationFrame(this.raf);
+    this.visible = false;
     window.removeEventListener("resize", this.resize);
     window.removeEventListener("pointermove", this.onPointer);
     window.removeEventListener("pointerdown", this.onPointer);
     document.removeEventListener("pointerleave", this.onLeave);
-    this.observer.disconnect();
-    this.renderer.dispose();
-    this.renderer.domElement.remove();
+    this.observer?.disconnect();
+    if (this.renderer) {
+      try {
+        this.renderer.forceContextLoss();
+        this.renderer.dispose();
+        this.renderer.domElement?.remove();
+      } catch {}
+    }
   }
 }
