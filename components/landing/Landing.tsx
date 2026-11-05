@@ -386,9 +386,7 @@ export default function Landing() {
           <p className="eyebrow reveal">( BE PART OF WHAT&apos;S NEXT )</p>
           <h2>
            
-            <Split text="Build what" />
-            <br />
-            <Split text="comes next." cls="grad" />
+            <Split text="Build what comes next." cls="grad" />
           </h2>
           <p className="cta-desc reveal">
             We are advancing the frontiers of intelligence through research, engineering and ambitious technological work.

@@ -231,17 +231,7 @@ button.pill {
 .cta { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 16vh 20px; }
 .cta h2 { font-size: clamp(54px, calc(150 * var(--u)), 200px); margin-top: 20px; }
 .cta .grad .c { color: var(--pink); text-shadow: 0 0 50px rgba(172, 88, 233, 0.6); }
-.cta-desc {
-  max-width: 680px;
-  margin: 28px auto 0;
-  font-size: clamp(16px, calc(20 * var(--u)), 21px);
-  line-height: 1.6;
-  color: var(--cream);
-  opacity: 0.75;
-  font-weight: 300;
-  letter-spacing: -0.01em;
-}
-.cta-row { display: flex; align-items: center; gap: 32px; margin-top: 5vh; flex-wrap: wrap; justify-content: center; }
+.cta-row { display: flex; align-items: center; gap: 32px; margin-top: 7vh; flex-wrap: wrap; justify-content: center; }
 .pill.big { height: 64px; padding: 0 34px; font-size: 15px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #07060b !important; }
 .pill.big svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .mail { font-size: 15px; border-bottom: 1px solid var(--line); padding-bottom: 4px; transition: border-color 0.3s; }
